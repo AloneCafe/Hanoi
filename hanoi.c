@@ -134,7 +134,7 @@ void menu()
 		case '3': diff = NORMAL; break;
 		case '4': diff = HARD; break;
 		case '5': diff = VERY_HARD; break;
-		case KEY_QUIT: exit(0);
+		case KEY_QUIT: CLEAR(); exit(0);
 		default:
 		menu();
 	}
@@ -274,6 +274,7 @@ void mainLoop()
 				break;
 				
 			case KEY_QUIT:
+				CLEAR();
 				exit(0);
 		}
 
