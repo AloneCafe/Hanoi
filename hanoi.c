@@ -9,21 +9,21 @@
 
 	int getch()
 	{
-		int cr;
-		struct termios nts, ots;
+    		int cr;
+    		struct termios nts, ots;
 
-		if (tcgetattr(0, &ots) < 0) //å¾—åˆ°å½“å‰ç»ˆç«¯(0è¡¨ç¤ºæ ‡å‡†è¾“å…¥)çš„è®¾ç½®
-			return EOF;
-		nts = ots;
-		cfmakeraw(&nts); //è®¾ç½®ç»ˆç«¯ä¸ºRawåŸå§‹æ¨¡å¼ï¼Œè¯¥æ¨¡å¼ä¸‹æ‰€æœ‰çš„è¾“å…¥æ•°æ®ä»¥å­—èŠ‚ä¸ºå•ä½è¢«å¤„ç†
-		if (tcsetattr(0, TCSANOW, &nts) < 0) //è®¾ç½®ä¸Šæ›´æ”¹ä¹‹åçš„è®¾ç½®
-			return EOF;
+    		if (tcgetattr(0, &ots) < 0) // µÃµ½µ±Ç°ÖÕ¶Ë(0±íÊ¾±ê×¼ÊäÈë)µÄÉèÖÃ
+        		return EOF;
+    		nts = ots;
+    		cfmakeraw(&nts); // ÉèÖÃÖÕ¶ËÎªRawÔ­Ê¼Ä£Ê½£¬¸ÃÄ£Ê½ÏÂËùÓĞµÄÊäÈëÊı¾İÒÔ×Ö½ÚÎªµ¥Î»±»´¦Àí
+    		if (tcsetattr(0, TCSANOW, &nts) < 0) // ÉèÖÃÉÏ¸ü¸ÄÖ®ºóµÄÉèÖÃ
+        		return EOF;
 
-		cr = getchar();
-		if (tcsetattr(0, TCSANOW, &ots) < 0) //è®¾ç½®è¿˜åŸæˆè€çš„æ¨¡å¼
-			return EOF;
+    		cr = getchar();
+    		if (tcsetattr(0, TCSANOW, &ots) < 0) // ÉèÖÃ»¹Ô­³ÉÀÏµÄÄ£Ê½
+        		return EOF;
 
-		return cr;
+    		return cr;
 	}
 #endif
 
@@ -74,7 +74,7 @@ struct column
 
 };
 
-const char *diff_str[5] = {"éå¸¸ç®€å•", "ç®€å•", "æ­£å¸¸", "å›°éš¾", "éå¸¸å›°éš¾"};
+const char *diff_str[5] = {"·Ç³£¼òµ¥", "¼òµ¥", "Õı³£", "À§ÄÑ", "·Ç³£À§ÄÑ"};
 
 enum diff
 {
@@ -123,9 +123,9 @@ void push()
 void menu()
 {
 	CLEAR();
-	printf("==============================  æ±‰ è¯º å¡”  ==============================\n\n");
-	printf("è¯·æŒ‰å¯¹åº”çš„æ•°å­—é”®é€‰æ‹©æ¸¸æˆéš¾åº¦ï¼Œæˆ–æŒ‰ Q é”®é€€å‡ºæ¸¸æˆ: \n\n");
-	printf("1. éå¸¸ç®€å•\n2. ç®€å•\n3. æ­£å¸¸\n4. å›°éš¾\n5. éå¸¸å›°éš¾\n");
+	printf("==============================  ºº Åµ Ëş  ==============================\n\n");
+	printf("Çë°´¶ÔÓ¦µÄÊı×Ö¼üÑ¡ÔñÓÎÏ·ÄÑ¶È£¬»ò°´ Q ¼üÍË³öÓÎÏ·: \n\n");
+	printf("1. ·Ç³£¼òµ¥\n2. ¼òµ¥\n3. Õı³£\n4. À§ÄÑ\n5. ·Ç³£À§ÄÑ\n");
 	
 	switch(getch())
 	{
@@ -143,16 +143,16 @@ void menu()
 void display()
 {
 	CLEAR();
-	printf("==============================  æ±‰ è¯º å¡”  ==============================\n");
-	printf("æ§åˆ¶: W,A,S,D        é€€å‡º: Q        éš¾åº¦: %s        æ­¥æ•°: %d\n\n", diff_str[diff], step_count);
+	printf("==============================  ºº Åµ Ëş  ==============================\n");
+	printf("¿ØÖÆ: W,A,S,D        ÍË³ö: Q        ÄÑ¶È: %s        ²½Êı: %d\n\n", diff_str[diff], step_count);
 	int i, j;
 
 	//opt
 	if(opt == CENTRAL)
-		//25 æ ¼
+		//25 ¸ñ
 		printf("                         ");
 	else if(opt == RIGHT)
-		//50 æ ¼
+		//50 ¸ñ
 		printf("                                                  ");
 
 	for(i = 0; i < 12 - column_temp; i++)
@@ -280,10 +280,10 @@ void mainLoop()
 
 		if(isCompleted())
 		{
-			//æœ€åä¸€æ¬¡æ˜¾ç¤ºåˆ·æ–°
+			//×îºóÒ»´ÎÏÔÊ¾Ë¢ĞÂ
 			display();
-			printf("\næ­å–œè¿‡å…³ï¼ä½ ä¸€å…±ä½¿ç”¨ %d æ­¥å®Œæˆäº†è¿™ä¸ªè°œé¢˜\n", step_count);
-			printf("æŒ‰ä»»æ„é”®é€€å‡º...\n");
+			printf("\n¹§Ï²¹ı¹Ø£¡ÄãÒ»¹²Ê¹ÓÃ %d ²½Íê³ÉÁËÕâ¸öÃÕÌâ\n", step_count);
+			printf("°´ÈÎÒâ¼üÍË³ö...\n");
 			getch();
 			break;
 		}
@@ -296,6 +296,3 @@ int main(int argc, char **argv)
 	mainLoop();
 	return 0;
 }
-
-
-
