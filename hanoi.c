@@ -9,21 +9,21 @@
 
 	int getch()
 	{
-    	int cr;
-    	struct termios nts, ots;
+		int cr;
+		struct termios nts, ots;
 
-    	if (tcgetattr(0, &ots) < 0) // 得到当前终端(0表示标准输入)的设置
-        	return EOF;
-    	nts = ots;
-    	cfmakeraw(&nts); // 设置终端为Raw原始模式，该模式下所有的输入数据以字节为单位被处理
-    	if (tcsetattr(0, TCSANOW, &nts) < 0) // 设置上更改之后的设置
-        	return EOF;
+		if (tcgetattr(0, &ots) < 0) //得到当前终端(0表示标准输入)的设置
+			return EOF;
+		nts = ots;
+		cfmakeraw(&nts); //设置终端为Raw原始模式，该模式下所有的输入数据以字节为单位被处理
+		if (tcsetattr(0, TCSANOW, &nts) < 0) //设置上更改之后的设置
+			return EOF;
 
-    	cr = getchar();
-    	if (tcsetattr(0, TCSANOW, &ots) < 0) // 设置还原成老的模式
-        	return EOF;
+		cr = getchar();
+		if (tcsetattr(0, TCSANOW, &ots) < 0) //设置还原成老的模式
+			return EOF;
 
-    	return cr;
+		return cr;
 	}
 #endif
 
